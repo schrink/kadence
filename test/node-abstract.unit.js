@@ -289,20 +289,21 @@ describe('@class AbstractNode', function() {
   describe('@private _timeout', function() {
 
     it('should call handlers of old requests and reap references', function() {
+      let now = Date.now();
       let handler0 = sinon.stub();
       let handler1 = sinon.stub();
       let handler2 = sinon.stub();
       abstractNode._pending.set(0, {
         handler: handler0,
-        timestamp: Date.now()
+        ttl: constants.T_RESPONSETIMEOUT + now
       });
       abstractNode._pending.set(1, {
         handler: handler1,
-        timestamp: Date.now() - constants.T_RESPONSETIMEOUT - 200
+        ttl: now - 200
       });
       abstractNode._pending.set(2, {
         handler: handler2,
-        timestamp: 0
+        ttl: now - 15
       });
       abstractNode._timeout();
       expect(handler0.called).to.equal(false);
