@@ -381,6 +381,7 @@ async function init() {
   node = new kadence.KademliaNode({
     logger,
     transport,
+    identity: Buffer.from(identity, 'hex'),
     contact,
     storage: levelup(encoding(leveldown(config.EmbeddedDatabaseDirectory)))
   });
